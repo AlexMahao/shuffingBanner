@@ -74,16 +74,15 @@ public class ShufBanner extends RelativeLayout implements ViewPager.OnPageChange
             showPonit = showPonit + 1;
 
             //getChildCount()获取的是当前存在的子类，销毁机制
-
+/*
             if (showPonit >= mImageViews.size()) {
 
                 showPonit = 1;
-            }
+            }*/
 
 
             //获得的是正常位置
             mVp.setCurrentItem(showPonit);
-
 
             if (isStartShuf) {
                 sendEmptyMessageDelayed(1, 2000);
@@ -111,7 +110,9 @@ public class ShufBanner extends RelativeLayout implements ViewPager.OnPageChange
         if (urls.size() == 0 || urls == null) {
             return;
         }
-
+        /**
+         * 清楚数据
+         */
         clearAllData();
 
 
@@ -134,10 +135,10 @@ public class ShufBanner extends RelativeLayout implements ViewPager.OnPageChange
 
 
         //开始刷新
-
         mAdapter.notifyDataSetChanged();
         mVp.setCurrentItem(1);
 
+        //发送循环请求
         this.isStartShuf = isStartShuf;
         if (this.isStartShuf&&mImages.size()>3) {
             handler.sendEmptyMessageAtTime(1, 2000);
@@ -202,14 +203,17 @@ public class ShufBanner extends RelativeLayout implements ViewPager.OnPageChange
 
     private void saveUrl() {
 
-        String startImageView = mImages.get(0);
-        String endImageView = mImages.get(mImages.size() - 1);
+        String startImageUrl = mImages.get(0);
+        String endImageUrl = mImages.get(mImages.size() - 1);
 
-        mImages.add(0, endImageView);
-        mImages.add(mImages.size(), startImageView);
+        mImages.add(0, endImageUrl);
+        mImages.add(mImages.size(), startImageUrl);
     }
 
 
+    /**
+     * 初始化ViewPager
+     */
     private void initViewPager() {
         mVp = ((ViewPager) findViewById(R.id.vp));
 
@@ -220,7 +224,9 @@ public class ShufBanner extends RelativeLayout implements ViewPager.OnPageChange
         mNavigationLayout = (LinearLayout) findViewById(R.id.ll_navigation);
 
         mAdapter = new ShufBannerAdapter(getContext(), mImageViews);
+
         mVp.setAdapter(mAdapter);
+
         mVp.addOnPageChangeListener(this);
 
     }
@@ -257,6 +263,9 @@ public class ShufBanner extends RelativeLayout implements ViewPager.OnPageChange
          */
         changePosition(position);
 
+        /**
+         * 修改点的状态
+         */
         changePointState(position);
     }
 
